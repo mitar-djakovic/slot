@@ -29,26 +29,34 @@ function useWindowDimensions() {
 }
 
 const SlotView = () => {
+  const [spining, setSpining] = useState(false);
   const { height, width } = useWindowDimensions();
-
+  
   const options = {
     backgroundColor: 0x1099bb,
     height: height - 3,
     width
   };
- 
+  
   return (
     <Stage options={options} >
       <AppContext.Consumer>
         {app => (
+
           <React.Fragment>
-            <Background app={app} width={width} height={height} background={background} />
+            <Background 
+              app={app} 
+              width={app.renderer.screen.width} 
+              height={app.renderer.screen.height} 
+              background={background} 
+            />
             <Menu 
               app={app} 
-              width={width} 
-              height={height}
+              width={app.renderer.screen.width} 
+              height={app.renderer.screen.height}
+              onClick={() => setSpining(true)} 
             />
-            <Reels app={app} />
+            <Reels app={app} spining={spining} />
           </React.Fragment>
         )}
       </AppContext.Consumer>

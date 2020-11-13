@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js';
 import Button from '../button';
 import { play, maxbet, autoplay, base } from '../../assets';
 
-const Menu = ({ app, width, height }) => {
+const Menu = ({ app, width, height, onClick }) => {
 
   return (
     <Container
@@ -34,6 +34,7 @@ const Menu = ({ app, width, height }) => {
         y={-5}
         interactive
         app={app}
+        onClick={onClick}
       />
       <Button 
         texture={PIXI.Texture.from(maxbet)}
