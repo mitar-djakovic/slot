@@ -12,6 +12,7 @@ import trolley from './trolley.png';
 import wild from './wild.png';
 import gold from './gold.png';
 import bag from './bag.png';
+import cover from './cover.png';
 
 export {
   background,
@@ -27,5 +28,6 @@ export {
   trolley,
   wild,
   gold,
-  bag
+  bag,
+  cover
 }

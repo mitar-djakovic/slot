@@ -5,6 +5,19 @@ import Button from '../button';
 import { play, maxbet, autoplay, base } from '../../assets';
 
 const Menu = ({ app, width, height, onClick }) => {
+  const baseWidth = width;
+  const baseHeight = 150;
+
+  const playWidth = width >= 900 ? 150 : 100;
+  const playHight = width >= 900 ? 150 : 100;
+  const playX = width >= 900 ? width / 2 - playWidth / 2 : width / 2 - playWidth / 2;
+  const playY = width >= 900 ? -5 : 30;
+  
+  const sideButtonWidth = 100;
+  const sideButtonHeight = 100;
+  const sideButtonY = 50;
+  const leftButtonX = width >= 900 ? width / 2 - 180  : width / 2 - 150;
+  const rightButtonX = width >= 900 ? width / 2 + 80  : width / 2 + 50;
 
   return (
     <Container
@@ -13,37 +26,35 @@ const Menu = ({ app, width, height, onClick }) => {
     >
       <Sprite
         texture={PIXI.Texture.from(base)}
-        width={width}
-        height={150}
+        width={baseWidth}
+        height={baseHeight}
         anchor={new PIXI.Point(0, 0)}
       />
       <Button 
         texture={PIXI.Texture.from(autoplay)}
-        width={150}
-        height={100}
-        x={(width - 450) / 2}
-        y={50} 
+        width={sideButtonWidth}
+        height={sideButtonHeight}
+        x={leftButtonX}
+        y={sideButtonY} 
         interactive
-        rotation={0}
       />
       <Button 
         texture={PIXI.Texture.from(play)}
-        width={150}
-        height={150} 
-        x={(width - 150) / 2}
-        y={-5}
+        width={playWidth}
+        height={playHight} 
+        x={playX}
+        y={playY}
         interactive
         app={app}
         onClick={onClick}
       />
       <Button 
         texture={PIXI.Texture.from(maxbet)}
-        width={150}
-        height={100}
-        x={(width + 150) / 2}
-        y={50}
+        width={sideButtonWidth}
+        height={sideButtonHeight}
+        x={rightButtonX}
+        y={sideButtonY}
         interactive 
-        rotation={0}
       />
     </Container>
   )

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Stage, AppContext, } from 'react-pixi-fiber';
+import * as PIXI from 'pixi.js';
 import Background from '../../components/background';
 import Menu from '../../components/menu';
 import Reels from '../../components/reels';
@@ -49,6 +50,8 @@ const SlotView = () => {
               width={app.renderer.screen.width} 
               height={app.renderer.screen.height} 
               background={background} 
+              x={0}
+              y={0}
             />
             <Menu 
               app={app} 
@@ -56,7 +59,12 @@ const SlotView = () => {
               height={app.renderer.screen.height}
               onClick={() => setSpining(true)} 
             />
-            <Reels app={app} spining={spining} />
+            <Reels 
+              app={app} 
+              spining={spining}
+              width={app.renderer.screen.width} 
+              height={app.renderer.screen.height} 
+            />
           </React.Fragment>
         )}
       </AppContext.Consumer>
