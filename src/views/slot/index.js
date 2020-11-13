@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Stage } from 'react-pixi-fiber';
+import { Stage, AppContext, } from 'react-pixi-fiber';
 import Background from '../../components/background';
 import Menu from '../../components/menu';
+import Reels from '../../components/reels';
 import { background } from '../../assets';
 
 function getScreenSize() {
@@ -35,11 +36,22 @@ const SlotView = () => {
     height: height - 3,
     width
   };
-
+ 
   return (
-    <Stage style={{ position: 'absolute' }} options={options} >
-      <Background width={width} height={height} background={background} />
-      <Menu width={width} height={height} />
+    <Stage options={options} >
+      <AppContext.Consumer>
+        {app => (
+          <React.Fragment>
+            <Background app={app} width={width} height={height} background={background} />
+            <Menu 
+              app={app} 
+              width={width} 
+              height={height}
+            />
+            <Reels app={app} />
+          </React.Fragment>
+        )}
+      </AppContext.Consumer>
     </Stage>
   )
 };

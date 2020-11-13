@@ -1,0 +1,2 @@
+export const START_SPIN_REELS = 'START_SPIN_REELS';
+export const STOP_SPIN_REELS = 'STOP_SPIN_REELS';

@@ -4,38 +4,45 @@ import * as PIXI from 'pixi.js';
 import Button from '../button';
 import { play, maxbet, autoplay, base } from '../../assets';
 
-const Menu = ({ width, height }) => {
+const Menu = ({ app, width, height }) => {
+
   return (
     <Container
       position={{ x:0, y: height - 150}}
       width={width}
     >
       <Sprite
-        texture={new PIXI.Texture.from(base)}
+        texture={PIXI.Texture.from(base)}
         width={width}
         height={150}
         anchor={new PIXI.Point(0, 0)}
       />
       <Button 
-        texture={new PIXI.Texture.from(autoplay)}
+        texture={PIXI.Texture.from(autoplay)}
         width={150}
         height={100}
         x={(width - 450) / 2}
         y={50} 
+        interactive
+        rotation={0}
       />
       <Button 
-        texture={new PIXI.Texture.from(play)}
+        texture={PIXI.Texture.from(play)}
         width={150}
         height={150} 
         x={(width - 150) / 2}
         y={-5}
+        interactive
+        app={app}
       />
       <Button 
-        texture={new PIXI.Texture.from(maxbet)}
+        texture={PIXI.Texture.from(maxbet)}
         width={150}
         height={100}
         x={(width + 150) / 2}
-        y={50} 
+        y={50}
+        interactive 
+        rotation={0}
       />
     </Container>
   )

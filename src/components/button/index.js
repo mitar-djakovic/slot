@@ -1,7 +1,7 @@
 import React from 'react';
 import { Sprite } from 'react-pixi-fiber';
 
-const Button = ({ texture, width, height, x, y }) => {
+const Button = ({ texture, width, height, x, y, interactive }) => {
 
   return (
     <Sprite
@@ -10,6 +10,10 @@ const Button = ({ texture, width, height, x, y }) => {
       height={height}
       x={x}
       y={y}
+      interactive={interactive}
+      pointerdown={() => {
+        console.log('click');
+      }}
     />
   )
 };

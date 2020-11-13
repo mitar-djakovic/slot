@@ -10,6 +10,8 @@ import lamp from './lamp.png';
 import snake from './snake.png';
 import trolley from './trolley.png';
 import wild from './wild.png';
+import gold from './gold.png';
+import bag from './bag.png';
 
 export {
   background,
@@ -23,5 +25,7 @@ export {
   lamp,
   snake,
   trolley,
-  wild
+  wild,
+  gold,
+  bag
 }

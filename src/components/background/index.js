@@ -3,7 +3,6 @@ import { Sprite } from 'react-pixi-fiber';
 import * as PIXI from 'pixi.js';
 
 const Background = ({ background, width, height }) => {
-
   return (
     <Sprite
       anchor={new PIXI.Point(0)}
