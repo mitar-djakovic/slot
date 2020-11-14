@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Stage, AppContext, } from 'react-pixi-fiber';
+import { Stage, AppContext, Sprite } from 'react-pixi-fiber';
 import * as PIXI from 'pixi.js';
 import Background from '../../components/background';
 import Menu from '../../components/menu';
 import Reels from '../../components/reels';
-import { background } from '../../assets';
+import { background, logo } from '../../assets';
 
 function getScreenSize() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -52,6 +52,7 @@ const SlotView = () => {
               background={background} 
               x={0}
               y={0}
+              zIndex={1}
             />
             <Menu 
               app={app} 

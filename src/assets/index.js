@@ -13,6 +13,7 @@ import wild from './wild.png';
 import gold from './gold.png';
 import bag from './bag.png';
 import cover from './cover.png';
+import logo from './logo.png';
 
 export {
   background,
@@ -29,5 +30,6 @@ export {
   wild,
   gold,
   bag,
-  cover
+  cover,
+  logo
 }

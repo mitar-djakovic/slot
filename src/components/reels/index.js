@@ -1,8 +1,8 @@
 import React from 'react';
-import { Container } from 'react-pixi-fiber';
+import { Container, Graphics, Sprite } from 'react-pixi-fiber';
 import * as PIXI from 'pixi.js';
 import Background from '../background';
-import { wild, trolley, snake, lamp, gold, crate, boots, barrels, bag, cover } from '../../assets';
+import { wild, trolley, snake, lamp, gold, crate, boots, barrels, bag, cover, logo } from '../../assets';
 
 const Reels = ({ app, width, height }) => {
   const reelWidth = width >= 900 ? 160 : 120;
@@ -10,22 +10,22 @@ const Reels = ({ app, width, height }) => {
   const reelBackgroundWidth = reelWidth * 5;
   const reelBackgroundHeight = reelWidth * 3;
   const reelBackgroundX = width / 2 - reelBackgroundWidth / 2;
-  const reelBackgroundY = height / 2 - reelBackgroundHeight / 2;
+  const reelBackgroundY = height / 2 - reelBackgroundHeight / 2 - 50;
   const reelContainerX = width / 2 - (reelWidth * 5 / 2);
-  const reelContainerY = width >= 900 ? height / 2 - 60 : height / 2 - 40;
+  const reelContainerY = width >= 900 ? height / 2 - 100 : height / 2 - 150;
 
   app.loader
-  .add('wild', wild)
-  .add('trolley', trolley)
-  .add('snake', snake)
-  .add('lamp', lamp)
-  .add('gold', gold)
-  .add('crate', crate)
-  .add('boots', boots)
-  .add('barrels', barrels)
-  .add('bag', bag)
-  .add('cover', cover)
-  .load(onAssetsLoaded);
+    .add('wild', wild)
+    .add('trolley', trolley)
+    .add('snake', snake)
+    .add('lamp', lamp)
+    .add('gold', gold)
+    .add('crate', crate)
+    .add('boots', boots)
+    .add('barrels', barrels)
+    .add('bag', bag)
+    .add('cover', cover)
+    .load(onAssetsLoaded);
 
   // onAssetsLoaded handler builds the example.
   function onAssetsLoaded() {
@@ -65,7 +65,7 @@ const Reels = ({ app, width, height }) => {
       for (let j = 0; j < 3; j++) {
         const symbol = new PIXI.Sprite(slotTextures[Math.floor(Math.random() * slotTextures.length)]);
         // Scale the symbol to fit symbol area.
-        symbol.y = j * symbolSize;
+        symbol.y = j * symbolSize ;
         symbol.scale.x = symbol.scale.y = Math.min(symbolSize / symbol.width, symbolSize / symbol.height);
         symbol.x = Math.round((symbolSize - symbol.width) / 2 + 10);
         reel.symbols.push(symbol);
@@ -73,9 +73,10 @@ const Reels = ({ app, width, height }) => {
       }
       reels.push(reel);
     }
+    app.stage.addChild(reelContainer);
+
     reelContainer.x = reelContainerX
     reelContainer.y = reelContainerY;
-    app.stage.addChild(reelContainer);
 
     let running = false;
 
@@ -180,14 +181,22 @@ const Reels = ({ app, width, height }) => {
   }
   
   return (
-    <Container width={900} height={height - 500}>
+    <Container>
       <Background
-        // x={width / 2 - (reelWidth * 5 / 2)}
         x={reelBackgroundX}
         y={reelBackgroundY}
         background={cover}
         width={reelBackgroundWidth}
-        height={reelBackgroundHeight} 
+        height={reelBackgroundHeight}
+        zIndex={1} 
+      />
+      <Sprite
+        texture={PIXI.Texture.from(logo)} 
+        width={reelBackgroundWidth}
+        height={100}
+        x={reelBackgroundX}
+        y={reelBackgroundY - 80}
+        zIndex={5}
       />
     </Container>
   )
