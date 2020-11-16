@@ -2,7 +2,6 @@ import React from 'react';
 import { Sprite } from 'react-pixi-fiber';
 
 const Button = ({ texture, width, height, x, y, interactive, onClick }) => {
-
   return (
     <Sprite
       texture={texture}
