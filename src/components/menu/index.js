@@ -2,23 +2,37 @@ import React from 'react';
 import { Container, Sprite } from 'react-pixi-fiber';
 import * as PIXI from 'pixi.js';
 import Button from '../button';
-import { play, maxbet, autoplay, base } from '../../assets';
+import { maxbet, autoplay, base } from '../../assets';
 
-const Menu = ({ app, width, height, onClick }) => {
+const Menu = ({ app, width, height }) => {
   const baseWidth = width;
   const baseHeight = 150;
 
-  const playWidth = width >= 900 ? 150 : 100;
-  const playHight = width >= 900 ? 150 : 100;
-  const playX = width >= 900 ? width / 2 - playWidth / 2 : width / 2 - playWidth / 2;
-  const playY = width >= 900 ? -5 : 30;
-  
-  const sideButtonWidth = 100;
-  const sideButtonHeight = 100;
-  const sideButtonY = 50;
-  const leftButtonX = width >= 900 ? width / 2 - 180  : width / 2 - 150;
-  const rightButtonX = width >= 900 ? width / 2 + 80  : width / 2 + 50;
+  let sideButtonWidth;
+  let sideButtonHeight;
+  let sideButtonY;
+  let leftButtonX;
+  let rightButtonX;
 
+  if (width < 500) {
+    sideButtonWidth = 60
+    sideButtonHeight = 80
+    sideButtonY = 70;
+    leftButtonX = width / 2 - sideButtonWidth - sideButtonWidth / 2;
+    rightButtonX = width / 2 + sideButtonWidth - sideButtonWidth / 2;
+  } else if (width >= 500 && width < 900) {
+    sideButtonWidth = 80
+    sideButtonHeight = 100
+    sideButtonY = 70;
+    leftButtonX = width / 2 - sideButtonWidth - sideButtonWidth / 2;
+    rightButtonX = width / 2 + sideButtonWidth - sideButtonWidth / 2;
+  } else {
+    sideButtonWidth = 80
+    sideButtonHeight = 100
+    sideButtonY = 70;
+    leftButtonX = width / 2 - sideButtonWidth - sideButtonWidth / 2;
+    rightButtonX = width / 2 + sideButtonWidth - sideButtonWidth / 2;
+  }
   return (
     <Container
       position={{ x:0, y: height - 150}}
@@ -38,7 +52,7 @@ const Menu = ({ app, width, height, onClick }) => {
         y={sideButtonY} 
         interactive
       />
-      <Button 
+      {/* <Button 
         texture={PIXI.Texture.from(play)}
         width={playWidth}
         height={playHight} 
@@ -47,7 +61,7 @@ const Menu = ({ app, width, height, onClick }) => {
         interactive
         app={app}
         onClick={onClick}
-      />
+      /> */}
       <Button 
         texture={PIXI.Texture.from(maxbet)}
         width={sideButtonWidth}
