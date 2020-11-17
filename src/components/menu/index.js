@@ -1,10 +1,14 @@
 import React from 'react';
-import { Container, Sprite } from 'react-pixi-fiber';
+import { Container } from 'react-pixi-fiber';
+import { useDispatch } from 'react-redux';
 import * as PIXI from 'pixi.js';
 import Button from '../button';
+import MenuData from '../menuData';
 import { maxbet, autoplay, base } from '../../assets';
+import { incrementBetValue, decrementBetValue, setMaxBet, autoBet} from '../../redux/actions';
 
 const Menu = ({ app, width, height }) => {
+  const dispatch = useDispatch();
   const baseWidth = width;
   const baseHeight = 150;
 
@@ -13,6 +17,9 @@ const Menu = ({ app, width, height }) => {
   let sideButtonY;
   let leftButtonX;
   let rightButtonX;
+  let leftTextX;
+  let rightTextX;
+  let textY;
 
   if (width < 500) {
     sideButtonWidth = 60
@@ -20,29 +27,39 @@ const Menu = ({ app, width, height }) => {
     sideButtonY = 70;
     leftButtonX = width / 2 - sideButtonWidth - sideButtonWidth / 2;
     rightButtonX = width / 2 + sideButtonWidth - sideButtonWidth / 2;
+    leftTextX = leftButtonX + 10;
+    rightTextX = rightButtonX + 10;
+    textY = 100
   } else if (width >= 500 && width < 900) {
     sideButtonWidth = 80
     sideButtonHeight = 100
     sideButtonY = 70;
     leftButtonX = width / 2 - sideButtonWidth - sideButtonWidth / 2;
     rightButtonX = width / 2 + sideButtonWidth - sideButtonWidth / 2;
+    leftTextX = leftButtonX + 20;
+    rightTextX = rightButtonX + 20;
+    textY = 100;
   } else {
-    sideButtonWidth = 80
+    sideButtonWidth = 120
     sideButtonHeight = 100
     sideButtonY = 70;
     leftButtonX = width / 2 - sideButtonWidth - sideButtonWidth / 2;
     rightButtonX = width / 2 + sideButtonWidth - sideButtonWidth / 2;
+    leftTextX = leftButtonX + 35;
+    rightTextX = rightButtonX + 40;
+    textY = 100; 
   }
   return (
     <Container
       position={{ x:0, y: height - 150}}
       width={width}
     >
-      <Sprite
-        texture={PIXI.Texture.from(base)}
+      <MenuData
+        texture={base}
         width={baseWidth}
         height={baseHeight}
-        anchor={new PIXI.Point(0, 0)}
+        incrementBetValue={() => dispatch(incrementBetValue())}
+        decrementBetValue={() => dispatch(decrementBetValue())}
       />
       <Button 
         texture={PIXI.Texture.from(autoplay)}
@@ -51,17 +68,11 @@ const Menu = ({ app, width, height }) => {
         x={leftButtonX}
         y={sideButtonY} 
         interactive
+        text='AUTO PLAY'
+        textX={leftTextX}
+        textY={textY}
+        onClick={() => dispatch(autoBet())}
       />
-      {/* <Button 
-        texture={PIXI.Texture.from(play)}
-        width={playWidth}
-        height={playHight} 
-        x={playX}
-        y={playY}
-        interactive
-        app={app}
-        onClick={onClick}
-      /> */}
       <Button 
         texture={PIXI.Texture.from(maxbet)}
         width={sideButtonWidth}
@@ -69,6 +80,10 @@ const Menu = ({ app, width, height }) => {
         x={rightButtonX}
         y={sideButtonY}
         interactive 
+        text='MAX BET'
+        textX={rightTextX}
+        textY={textY}
+        onClick={() => dispatch(setMaxBet())}
       />
     </Container>
   )

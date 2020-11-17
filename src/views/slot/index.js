@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Container } from 'react-pixi-fiber';
 import * as PIXI from 'pixi.js';
 import Background from '../../components/background';
 import Menu from '../../components/menu';
 import { background, wild, trolley, snake, lamp, gold, crate, boots, barrels, bag, play, cover, logo } from '../../assets';
+import { startSpinReels, stopSpinReels } from '../../redux/actions';
 
 const SlotView = ({ app, width, height }) => {
+  const dispatch = useDispatch();
   // Dimenstions
   let reelWidth;
   let symbolSize;
@@ -65,7 +68,7 @@ const SlotView = ({ app, width, height }) => {
     playButtonWidth = 100;
     playButtonX = width / 2 - playButtonWidth / 2;
     playButtonY = height - playButtonWidth - 10;
-    logoWidth = reelsBackgroundWidth;
+    logoWidth = reelsBackgroundWidth + 20;
     logoHeight = 60;
     logoX = width / 2 - logoWidth / 2;
     logoY = reelsBackgroundY - reelWidth / 2;
@@ -82,7 +85,7 @@ const SlotView = ({ app, width, height }) => {
     playButtonWidth = 100;
     playButtonX = width / 2 - playButtonWidth / 2;
     playButtonY = height - playButtonWidth - 10;
-    logoWidth = reelsBackgroundWidth;
+    logoWidth = reelsBackgroundWidth + 50;
     logoHeight = 80;
     logoX = width / 2 - logoWidth / 2;
     logoY = reelsBackgroundY - symbolSize / 2;
@@ -165,6 +168,7 @@ const SlotView = ({ app, width, height }) => {
   
     // Function to start playing.
     function startPlay() {
+      dispatch(startSpinReels())
       if (running) return;
       running = true;
   
@@ -180,6 +184,7 @@ const SlotView = ({ app, width, height }) => {
     // Reels done handler.
     function reelsComplete() {
       running = false;
+      dispatch(stopSpinReels())
     }
     // Listen for animate update.
     app.ticker.add((delta) => {

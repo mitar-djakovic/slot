@@ -1,2 +1,6 @@
 export const START_SPIN_REELS = 'START_SPIN_REELS';
 export const STOP_SPIN_REELS = 'STOP_SPIN_REELS';
+export const INCREMENT_BET_VALUE = 'INCREMENT_BET_VALUE';
+export const DECREMENT_BET_VALUE = 'DECREMENT_BET_VALUE';
+export const SET_MAX_BET = 'SET_MAX_BET';
+export const AUTO_BET = 'AUTO_BET';

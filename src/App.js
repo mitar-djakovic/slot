@@ -37,15 +37,15 @@ function App() {
   };
 
   return (
-    <Provider store={store}>
-      <Stage options={options} >
+    <Stage options={options} >
+      <Provider store={store}>
         <AppContext.Consumer>
           {app => (
             <SlotView app={app} width={width} height={height} />
           )}
         </AppContext.Consumer>
-      </Stage>
-    </Provider>
+      </Provider>
+    </Stage>
   );
 }
 
