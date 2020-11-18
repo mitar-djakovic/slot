@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Container } from 'react-pixi-fiber';
 import * as PIXI from 'pixi.js';
 import Background from '../../components/background';
@@ -8,7 +8,10 @@ import { background, wild, trolley, snake, lamp, gold, crate, boots, barrels, ba
 import { startSpinReels, stopSpinReels } from '../../redux/actions';
 
 const SlotView = ({ app, width, height }) => {
+  // State
+  const spining = useSelector(state => state.slot.spining);
   const dispatch = useDispatch();
+
   // Dimenstions
   let reelWidth;
   let symbolSize;
@@ -26,20 +29,7 @@ const SlotView = ({ app, width, height }) => {
   let logoX;
   let logoY;
   
-  app.loader
-    .add('wild', wild)
-    .add('trolley', trolley)
-    .add('snake', snake)
-    .add('lamp', lamp)
-    .add('gold', gold)
-    .add('crate', crate)
-    .add('boots', boots)
-    .add('barrels', barrels)
-    .add('bag', bag)
-    .load(onAssetsLoaded);
-  
   if (width < 500) {
-    console.log('telefoni')
     reelsBackgroundWidth = width;
     reelWidth = width / 5;
     symbolSize = width / 5 - 20;
@@ -56,7 +46,6 @@ const SlotView = ({ app, width, height }) => {
     logoX = 0;
     logoY = reelsBackgroundY - reelWidth / 2;
   } else if (width >= 500 && width < 900) {
-    console.log('tableti')
     reelWidth = 100;
     symbolSize = 80;
     reelsBackgroundWidth = reelWidth * 5;
@@ -73,7 +62,6 @@ const SlotView = ({ app, width, height }) => {
     logoX = width / 2 - logoWidth / 2;
     logoY = reelsBackgroundY - reelWidth / 2;
   } else {
-    console.log('kompjuteri');
     reelWidth = 160;
     symbolSize = 120;
     reelsBackgroundWidth = reelWidth * 5;
@@ -90,9 +78,19 @@ const SlotView = ({ app, width, height }) => {
     logoX = width / 2 - logoWidth / 2;
     logoY = reelsBackgroundY - symbolSize / 2;
   }
+  
   useEffect(() => {
-
-
+    app.loader
+      .add('wild', wild)
+      .add('trolley', trolley)
+      .add('snake', snake)
+      .add('lamp', lamp)
+      .add('gold', gold)
+      .add('crate', crate)
+      .add('boots', boots)
+      .add('barrels', barrels)
+      .add('bag', bag)
+      .load(onAssetsLoaded);
     return () => {
       console.log('componentDidUnmount')
     }
@@ -158,19 +156,19 @@ const SlotView = ({ app, width, height }) => {
     playButton.y = playButtonY;
     playButton.interactive = true;
     playButton.buttonMode = true;
-
     app.stage.addChild(playButton);
+    let runing = false;
     playButton.addListener('pointerdown', () => {
-      startPlay();
+      if (runing === false) {
+        startPlay();
+      }
     });
 
-    let running = false;
-  
     // Function to start playing.
     function startPlay() {
       dispatch(startSpinReels())
-      if (running) return;
-      running = true;
+      if (runing) return;
+      runing = true;
   
       for (let i = 0; i < reels.length; i++) {
         const r = reels[i];
@@ -183,7 +181,7 @@ const SlotView = ({ app, width, height }) => {
   
     // Reels done handler.
     function reelsComplete() {
-      running = false;
+      runing = false;
       dispatch(stopSpinReels())
     }
     // Listen for animate update.

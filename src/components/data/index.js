@@ -3,7 +3,6 @@ import { Sprite, Text, Container } from 'react-pixi-fiber';
 import * as PIXI from 'pixi.js';
 
 const Data = ({ label, x, y, fontSize, data, interactive, incrementBetValue,decrementBetValue }) => {
-  console.log('data', data)
   const style = new PIXI.TextStyle({
     fill: ['#ffffff', '#fff'],
     stroke: '#fff',
@@ -34,7 +33,6 @@ const Data = ({ label, x, y, fontSize, data, interactive, incrementBetValue,decr
           }}
           interactive 
           pointerdown={() => {
-            console.log('----')
             decrementBetValue()
           }}
           buttonMode
@@ -55,7 +53,6 @@ const Data = ({ label, x, y, fontSize, data, interactive, incrementBetValue,decr
           }}
           interactive
           pointerdown={() => {
-            console.log('++++')
             incrementBetValue()
           }}
           buttonMode

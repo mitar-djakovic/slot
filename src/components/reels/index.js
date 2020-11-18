@@ -34,14 +34,12 @@ const Reels = ({ app, width, height, reels }) => {
         y={reelBackgroundY}
       >
         {reels.map(reel => {
-          console.log('reel', reel);
           return (
             <Container
               x={reel.container.x}
               y={reel.container.y + 20}
             >
               {reel.symbols.map(symbol => {
-                console.log('symbol', symbol)
                 return (
                   <Sprite 
                     texture={PIXI.Texture.from(symbol.texture.textureCacheIds[0])}
