@@ -19,7 +19,7 @@ const Data = ({ label, x, y, fontSize, data, interactive, incrementBetValue,decr
         y={y}
         style={{
           ...style,
-          fontSize: 30
+          // fontSize: 30
         }} 
       />
       <Container>

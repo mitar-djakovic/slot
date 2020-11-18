@@ -14,6 +14,7 @@ import gold from './gold.png';
 import bag from './bag.png';
 import cover from './cover.png';
 import logo from './logo.png';
+import plank from './plank.png';
 
 export {
   background,
@@ -31,5 +32,6 @@ export {
   gold,
   bag,
   cover,
-  logo
+  logo,
+  plank
 }

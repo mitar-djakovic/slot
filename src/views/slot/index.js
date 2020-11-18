@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container } from 'react-pixi-fiber';
 import * as PIXI from 'pixi.js';
 import Background from '../../components/background';
 import Menu from '../../components/menu';
-import { background, wild, trolley, snake, lamp, gold, crate, boots, barrels, bag, play, cover, logo } from '../../assets';
+import { background, wild, trolley, snake, lamp, gold, crate, boots, barrels, bag, play, cover, logo, plank } from '../../assets';
 import { startSpinReels, stopSpinReels } from '../../redux/actions';
 
 const SlotView = ({ app, width, height }) => {
   // State
+  const [plankRotation, setPlankRotation] = useState()
   const spining = useSelector(state => state.slot.spining);
   const dispatch = useDispatch();
+  const reels = [];
 
   // Dimenstions
   let reelWidth;
@@ -28,7 +30,12 @@ const SlotView = ({ app, width, height }) => {
   let logoHeight;
   let logoX;
   let logoY;
+  let plankWidth;
+  let plankHeight;
+  let plankX;
+  let plankY;
   
+  // Break points
   if (width < 500) {
     reelsBackgroundWidth = width;
     reelWidth = width / 5;
@@ -45,6 +52,10 @@ const SlotView = ({ app, width, height }) => {
     logoHeight = 60;
     logoX = 0;
     logoY = reelsBackgroundY - reelWidth / 2;
+    plankWidth = width;
+    plankHeight = 220;
+    plankY = height / 2;
+    plankX = 0;
   } else if (width >= 500 && width < 900) {
     reelWidth = 100;
     symbolSize = 80;
@@ -61,6 +72,10 @@ const SlotView = ({ app, width, height }) => {
     logoHeight = 60;
     logoX = width / 2 - logoWidth / 2;
     logoY = reelsBackgroundY - reelWidth / 2;
+    plankWidth = reelWidth * 5 + 20;
+    plankHeight = 220;
+    plankX = width / 2 - plankWidth / 2;
+    plankY = height / 2;
   } else {
     reelWidth = 160;
     symbolSize = 120;
@@ -77,6 +92,10 @@ const SlotView = ({ app, width, height }) => {
     logoHeight = 80;
     logoX = width / 2 - logoWidth / 2;
     logoY = reelsBackgroundY - symbolSize / 2;
+    plankWidth = reelsBackgroundWidth + 50;
+    plankHeight = 220;
+    plankX = width / 2 - plankWidth / 2;
+    plankY = height / 2 + 80;
   }
   
   useEffect(() => {
@@ -95,27 +114,27 @@ const SlotView = ({ app, width, height }) => {
       console.log('componentDidUnmount')
     }
   }, [])
+  // Create different slot symbols.
+  const slotTextures = [
+    PIXI.Texture.from(wild),
+    PIXI.Texture.from(trolley),
+    PIXI.Texture.from(snake),
+    PIXI.Texture.from(lamp),
+    PIXI.Texture.from(gold),
+    PIXI.Texture.from(crate),
+    PIXI.Texture.from(boots),
+    PIXI.Texture.from(barrels),
+    PIXI.Texture.from(bag)
+  ];
 
   // onAssetsLoaded handler builds the example.
-  const reels = [];
   function onAssetsLoaded() {
-    // Create different slot symbols.
-    const slotTextures = [
-      PIXI.Texture.from(wild),
-      PIXI.Texture.from(trolley),
-      PIXI.Texture.from(snake),
-      PIXI.Texture.from(lamp),
-      PIXI.Texture.from(gold),
-      PIXI.Texture.from(crate),
-      PIXI.Texture.from(boots),
-      PIXI.Texture.from(barrels),
-      PIXI.Texture.from(bag)
-    ];
 
     // Build the reels
     const reelContainer = new PIXI.Container();
     for (let i = 0; i < 5; i++) {
       const rc = new PIXI.Container();
+      rc.zIndex = 1;
       rc.x = i * reelWidth;
       reelContainer.addChild(rc);
       
@@ -133,6 +152,7 @@ const SlotView = ({ app, width, height }) => {
 
       reel.blur.blurX = 0;
       reel.blur.blurY = 0;
+      reel.zIndex = 1;
       rc.filters = [reel.blur];
 
       // Build the symbols
@@ -142,6 +162,7 @@ const SlotView = ({ app, width, height }) => {
         symbol.y = j * symbolSize;
         symbol.scale.x = symbol.scale.y = Math.min(symbolSize / symbol.width, symbolSize / symbol.height);
         symbol.x = Math.round((symbolSize - symbol.width) / 2);
+        symbol.zIndex = 1;
         reel.symbols.push(symbol);
         rc.addChild(symbol);
       }
@@ -156,10 +177,12 @@ const SlotView = ({ app, width, height }) => {
     playButton.y = playButtonY;
     playButton.interactive = true;
     playButton.buttonMode = true;
+
     app.stage.addChild(playButton);
+
     let runing = false;
     playButton.addListener('pointerdown', () => {
-      if (runing === false) {
+      if (!runing) {
         startPlay();
       }
     });
@@ -178,7 +201,6 @@ const SlotView = ({ app, width, height }) => {
         tweenTo(r, 'position', target, time, backout(0.5), null, i === reels.length - 1 ? reelsComplete : null);
       }
     }
-  
     // Reels done handler.
     function reelsComplete() {
       runing = false;
@@ -294,6 +316,14 @@ const SlotView = ({ app, width, height }) => {
           x={logoX}
           y={logoY}
           zIndex={10} 
+        />
+        <Background
+          width={plankWidth}
+          height={plankHeight}
+          background={plank}
+          x={plankX}
+          y={plankY}
+          zIndex={100}
         />
       </React.Fragment>
     </Container>
