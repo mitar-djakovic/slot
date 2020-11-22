@@ -33,7 +33,8 @@ function App() {
   const options = {
     backgroundColor: 0x1099bb,
     height: height - 3,
-    width
+    width,
+    resolution: 1
   };
 
   return (

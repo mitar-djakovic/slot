@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sprite, Text, Container } from 'react-pixi-fiber';
+import { Text, Container } from 'react-pixi-fiber';
 import * as PIXI from 'pixi.js';
 
 const Data = ({ label, x, y, fontSize, data, interactive, incrementBetValue,decrementBetValue }) => {
@@ -19,7 +19,6 @@ const Data = ({ label, x, y, fontSize, data, interactive, incrementBetValue,decr
         y={y}
         style={{
           ...style,
-          // fontSize: 30
         }} 
       />
       <Container>

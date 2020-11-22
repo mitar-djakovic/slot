@@ -1,6 +1,6 @@
 import React from 'react';
-import { Sprite, Text } from 'react-pixi-fiber';
-import { useDispatch, useSelector } from "react-redux";
+import { Sprite } from 'react-pixi-fiber';
+import { useSelector } from "react-redux";
 import Data from '../data';
 import * as PIXI from 'pixi.js';
 

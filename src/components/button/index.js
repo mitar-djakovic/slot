@@ -2,8 +2,8 @@ import React from 'react';
 import { Sprite, Text } from 'react-pixi-fiber';
 import * as PIXI from 'pixi.js';
 
-const Button = ({ 
-  texture, width, height, x, y, interactive, onClick, text, textX, textY 
+const Button = ({
+  texture, width, height, x, y, interactive, onClick, text, textX, textY
 }) => {
   const style = new PIXI.TextStyle({
     fill: ['#ffffff', '#fff'],
@@ -18,10 +18,10 @@ const Button = ({
   return (
     <React.Fragment>
       <Text
-        text={text} 
+        text={text}
         style={style}
-        x={textX}
-        y={textY}
+        x={textX || 0}
+        y={textY || 0}
         zIndex={2}
       />
       <Sprite
@@ -29,7 +29,7 @@ const Button = ({
         width={width}
         height={height}
         x={x}
-        y={y}
+        y={y || 0}
         interactive={interactive}
         pointerdown={() => {
           onClick()
