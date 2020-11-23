@@ -1,14 +1,20 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Container} from 'react-pixi-fiber';
+import { useSelector, useDispatch } from 'react-redux';
 import * as PIXI from 'pixi.js';
 import Background from '../../components/background';
 import Menu from '../../components/menu';
-import Reels from "../../components/reels";
-import {countElements} from "../../helpers/arrays";
+import Reels from '../../components/reels';
+import { countElements } from '../../helpers/arrays';
+import { startSpinReels, stopSpinReels, calcSpinReels } from '../../redux/actions';
 
 window.PIXI = PIXI;
 
 const SlotView = ({app, width, height }) => {
+  const [points, setPoints] = useState(5);
+  const [loaded, setLoaded] = useState(false);
+  const spining = useSelector(state => state.slot.spining);
+  const dispatch = useDispatch();
   // State
   const tweening = useRef([]);
   const [reels, setReels] = useState([]);
@@ -28,9 +34,46 @@ const SlotView = ({app, width, height }) => {
     position: 0,
     previousPosition: 0
   }]);
-  const [loaded, setLoaded] = useState(false);
-  const [isSpinning, setIsSpinning] = useState(false);
   const initialWinCheck = useRef(false);
+
+  const slotTextures = [
+    {
+      name: 'snake',
+      value: -100,
+    },
+    {
+      name: 'barrels',
+      value: 10,
+    },
+    {
+      name: 'boots',
+      value: 20,
+    },
+    {
+      name: 'crate',
+      value: 30,
+    },
+    {
+      name: 'wild',
+      value: 40,
+    },
+    {
+      name: 'lamp',
+      value: 50,
+    },
+    {
+      name: 'bag',
+      value: 100,
+    },
+    {
+      name: 'gold',
+      value: 200,
+    },
+    {
+      name: 'trolley',
+      value: 500,
+    },
+  ]
 
   const randomizeSymbols = () => {
     const reels = [];
@@ -40,7 +83,9 @@ const SlotView = ({app, width, height }) => {
 
       // Build the symbols
       for (let j = 0; j < 9; j++) {
-        reelColumn.push(Math.floor(Math.random() * 9));
+        const symbol = slotTextures[Math.floor(Math.random() * 9)];
+        // reelColumn.push(Math.floor(Math.random() * 9));
+        reelColumn.push(symbol);
       }
       reels.push(reelColumn);
     }
@@ -92,8 +137,6 @@ const SlotView = ({app, width, height }) => {
         }
       }
 
-      // console.log(tempSpinPositions);
-
       if (JSON.stringify(spinPositions) !== JSON.stringify(tempSpinPositions)) {
         setSpinPositions(tempSpinPositions);
       }
@@ -104,55 +147,69 @@ const SlotView = ({app, width, height }) => {
     });
   }, []);
 
+  
   const checkWin = () => {
     const winLines = [
       [reels[0][3], reels[1][3], reels[2][3], reels[3][3], reels[4][3]],
       [reels[0][4], reels[1][4], reels[2][4], reels[3][4], reels[4][4]],
       [reels[0][5], reels[1][5], reels[2][5], reels[3][5], reels[4][5]],
     ];
-
+    
     const winLinesOccurrences = winLines.map(countElements);
-
+    
     winLinesOccurrences.forEach((winLine, index) => {
       Object.entries(winLine).forEach(([symbol, occurrences]) => {
         if (occurrences > 2) {
           console.log(`WIN ON LINE ${index} SYMBOL ${symbol}`);
+          const slotTexture = slotTextures.find(slotTexture => slotTexture.name === symbol);
+          
+          let points;
+          
+          if (occurrences === 3) {
+            points = slotTexture.value;
+          } else if (occurrences === 4) {
+            points = slotTexture.value * 3;
+          } else {
+            points = slotTexture.value * 5;
+          }
+
+          dispatch(calcSpinReels(points))
         }
       });
     });
   }
-
+  
   useEffect(() => {
-    if (!isSpinning && initialWinCheck.current) {
+    if (!spining && initialWinCheck.current) {
       checkWin();
     }
 
     if (!initialWinCheck.current) {
       initialWinCheck.current = true;
     }
-  }, [isSpinning]);
+  }, [spining]);
 
-  const onSpinEnd = () => {
-    setIsSpinning(false);
-  }
-
+  
   const onSpin = () => {
-    if (isSpinning) return;
-
-    setIsSpinning(true);
+    dispatch(startSpinReels());
+    
     randomizeSymbols();
-
+    
     for (let i = 0; i < reels.length; i++) {
       const extra = Math.floor(Math.random() * 3);
       let target = spinPositions[i].position + 10 + i * 5 + extra;
       target = target + 9 - target % 9;
       const time = 2500 + i * 600 + extra * 600;
-
+      
       // reelColumnIndex, target, time, easing, onchange, oncomplete
       tweenTo(i, target, time, backout(0.5), null, i === reels.length - 1 ? onSpinEnd : null);
     }
   }
 
+  const onSpinEnd = () => {
+    dispatch(stopSpinReels());
+  }
+  
   function tweenTo(reelColumnIndex, target, time, easing, onchange, oncomplete) {
     const tween = {
       reelColumnIndex,
@@ -181,7 +238,6 @@ const SlotView = ({app, width, height }) => {
   }
 
   if (!loaded) return null;
-
   return (
     <Container>
       <React.Fragment>

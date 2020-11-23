@@ -1,12 +1,13 @@
 import React from 'react';
 import { Container } from 'react-pixi-fiber';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as PIXI from 'pixi.js';
 import Button from '../button';
 import MenuData from '../menuData';
 import { incrementBetValue, decrementBetValue, setMaxBet, autoBet} from '../../redux/actions';
 
 const Menu = ({ app, width, height, onSpinClick }) => {
+  const spining = useSelector(state => state.slot.spining);
   const dispatch = useDispatch();
   const baseWidth = width;
   const baseHeight = 150;
@@ -102,7 +103,7 @@ const Menu = ({ app, width, height, onSpinClick }) => {
         height={playButtonWidth}
         x={playButtonX}
         interactive
-        onClick={onSpinClick}
+        onClick={!spining ? onSpinClick : () => {}}
         text=""
         y={playButtonY}
       />

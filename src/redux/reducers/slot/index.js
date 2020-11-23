@@ -4,7 +4,9 @@ import {
   INCREMENT_BET_VALUE,
   DECREMENT_BET_VALUE,
   AUTO_BET,
-  SET_MAX_BET
+  SET_MAX_BET,
+  CALC_SPIN_REELS,
+  UPDATE_CREEDITS
 } from '../../constants';
 
 const initialState = {
@@ -21,6 +23,15 @@ export default function slot(state = initialState, { type, payload }) {
         ...state,
         spining: true,
         creedits: state.creedits - state.bet
+      }
+    case CALC_SPIN_REELS:
+      return {
+        ...state,
+      }
+    case UPDATE_CREEDITS:
+      return {
+        ...state,
+        creedits: state.creedits + payload.creedits.payload.points
       }
     case STOP_SPIN_REELS:
       return {
